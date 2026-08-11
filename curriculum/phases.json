@@ -1,0 +1,46 @@
+{
+  "phases": [
+    {
+      "phase": 1,
+      "title": "Network behavior",
+      "module_start": 1,
+      "module_end": 4,
+      "learning_goal": "Build visible, manipulable intuition for network behavior."
+    },
+    {
+      "phase": 2,
+      "title": "Time and synchronization",
+      "module_start": 5,
+      "module_end": 8,
+      "learning_goal": "Build visible, manipulable intuition for time and synchronization."
+    },
+    {
+      "phase": 3,
+      "title": "Coordination and flow",
+      "module_start": 9,
+      "module_end": 12,
+      "learning_goal": "Build visible, manipulable intuition for coordination and flow."
+    },
+    {
+      "phase": 4,
+      "title": "Real-time networking",
+      "module_start": 13,
+      "module_end": 16,
+      "learning_goal": "Build visible, manipulable intuition for real-time networking."
+    },
+    {
+      "phase": 5,
+      "title": "Resilience",
+      "module_start": 17,
+      "module_end": 20,
+      "learning_goal": "Build visible, manipulable intuition for resilience."
+    },
+    {
+      "phase": 6,
+      "title": "Observability and assurance",
+      "module_start": 21,
+      "module_end": 24,
+      "learning_goal": "Build visible, manipulable intuition for observability and assurance."
+    }
+  ]
+}
