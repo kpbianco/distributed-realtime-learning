@@ -45,12 +45,12 @@
       "phase_title": "Network behavior",
       "slug": "serialize-and-frame-a-message",
       "folder": "modules/02-serialize-and-frame-a-message",
-      "status": "scaffolded",
+      "status": "implemented",
       "implementation_batch": "P02",
       "prerequisites": [
         "P01"
       ],
-      "evidence_level": "none"
+      "evidence_level": "simulated"
     },
     {
       "number": 3,

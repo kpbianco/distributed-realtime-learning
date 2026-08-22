@@ -59,6 +59,8 @@ def print_start(module):
 def cmd_start(args):
     manifest = load_manifest()
     module = resolve_module(manifest, args.module)
+    if module["status"] != "implemented":
+        return print_start(module)
     state = load_state()
     state["current"] = module["id"]
     save_state(state)
