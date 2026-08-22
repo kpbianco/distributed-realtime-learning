@@ -7,7 +7,7 @@ reviewable implementation batch. `implemented` means the complete learner slice 
 | Batch | Phase | Module | Guiding question | Status |
 | --- | --- | --- | --- | --- |
 | P01 | 1: Network behavior | [See Delay, Jitter, and Clock Skew Distort Timestamps](../modules/01-see-delay-jitter-and-clock-skew-distort-timestamps/README.md) | How do network delay, jitter, clock offset, and clock skew distort one-way timing? | implemented |
-| P02 | 1: Network behavior | [Serialize and Frame a Message](../modules/02-serialize-and-frame-a-message/README.md) | What inputs, observable effects, and failure modes matter when you serialize and Frame a Message? | scaffolded |
+| P02 | 1: Network behavior | [Serialize and Frame a Message](../modules/02-serialize-and-frame-a-message/README.md) | What inputs, observable effects, and failure modes matter when you serialize and Frame a Message? | implemented |
 | P03 | 1: Network behavior | [Compare TCP and UDP Behavior](../modules/03-compare-tcp-and-udp-behavior/README.md) | What inputs, observable effects, and failure modes matter when you compare TCP and UDP Behavior? | scaffolded |
 | P04 | 1: Network behavior | [Build a Queue and Watch Latency Grow](../modules/04-build-a-queue-and-watch-latency-grow/README.md) | What inputs, observable effects, and failure modes matter when you build a Queue and Watch Latency Grow? | scaffolded |
 | P05 | 2: Time and synchronization | [Separate Clock Offset from Network Delay](../modules/05-separate-clock-offset-from-network-delay/README.md) | What inputs, observable effects, and failure modes matter when you separate Clock Offset from Network Delay? | scaffolded |
