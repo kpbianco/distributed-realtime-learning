@@ -1,11 +1,208 @@
 %% P06 - Model NTP-Style Exchange
-% This module is curriculum-scaffolded but not implemented yet.
-%
-% Required read-visualize-lever-visualize-read build sequence:
-% 1. read a concise mental model and establish a deterministic baseline
-% 2. visualize at least two complementary outputs with labels and units
-% 3. move one meaningful lever and visualize its isolated effect
-% 4. reset, move a second independent lever, and visualize the tradeoff
-% 5. read/explain the mechanism, then break one named assumption
-% 6. finish with numerical checks and a short teach-back
-error('P06 is scaffolded. Activate its governed implementation batch before tutor use.');
+experimentFigureTag = 'P06ExperimentFigure';
+existingFigures = findall(groot,'Type','figure','Tag',experimentFigureTag);
+if ~isempty(existingFigures)
+    close(existingFigures);
+end
+
+%% Read the exchange before looking at syntax
+disp('What inputs, observable effects, and failure modes matter when you model NTP-Style Exchange?');
+disp(['P05 showed that one cross-clock timestamp mixes offset with one-way delay. ' ...
+    'P06 records T1/T4 at the client and T2/T3 at the server.']);
+disp(['Mechanism: average (T2-T1) with (T3-T4) for offset; subtract server ' ...
+    'residence from client elapsed time for network round trip.']);
+
+%% Visualize the deterministic baseline event path
+baseline = model(100,7,4,4,2);
+fprintf(['Baseline local timestamps [T1 T2 T3 T4] = [%.0f %.0f %.0f %.0f] ms; ' ...
+    'estimated offset %.0f ms.\n'],baseline.timestampObservationMs, ...
+    baseline.estimatedClockOffsetMs);
+fprintf(['Client elapsed %.0f ms - server residence %.0f ms = network round trip %.0f ms. ' ...
+    'The event timeline is simulation-only truth.\n'],baseline.clientElapsedMs, ...
+    baseline.serverResidenceMs,baseline.estimatedNetworkRoundTripDelayMs);
+
+eventEndpoint = [1;2;2;1];
+eventLabels = {'T1 client transmit';'T2 server receive'; ...
+    'T3 server transmit';'T4 client receive'};
+figure('Name','P06 baseline four-event truth timeline', ...
+    'Tag',experimentFigureTag);
+plot(baseline.trueEventElapsedMs,eventEndpoint,'o-','LineWidth',1.4); hold on;
+for eventIndex = 1:baseline.timestampCount
+    text(baseline.trueEventElapsedMs(eventIndex),eventEndpoint(eventIndex) + 0.08, ...
+        sprintf('%s, local %.0f ms',eventLabels{eventIndex}, ...
+        baseline.timestampObservationMs(eventIndex)), ...
+        'HorizontalAlignment','center');
+end
+hold off; grid on;
+set(gca,'YTick',[1 2],'YTickLabel',{'Client','Server'},'YLim',[0.7 2.35]);
+xlabel('Simulated true elapsed time since T1 (ms)');
+ylabel('Endpoint (simulation truth)');
+title('Baseline view 1: request, residence, and reply');
+
+expectedTrueEventTimeMs = [100 104 106 110]';
+expectedTimestampMs = [100 111 113 110]';
+assert(isequal(baseline.trueEventTimeMs,expectedTrueEventTimeMs) && ...
+    isequal(baseline.timestampObservationMs,expectedTimestampMs), ...
+    'Baseline event or local timestamp vector changed.');
+
+%% Change the view to the two offset terms
+offsetTermsMs = [baseline.forwardOffsetTermMs; ...
+    baseline.reverseOffsetTermMs;baseline.estimatedClockOffsetMs];
+figure('Name','P06 baseline offset-term arithmetic', ...
+    'Tag',experimentFigureTag);
+bar(1:3,offsetTermsMs); hold on;
+yline(baseline.clockOffsetMs,'k--','LineWidth',1.2, ...
+    'DisplayName','Simulated true offset');
+hold off; grid on;
+set(gca,'XTick',1:3,'XTickLabel', ...
+    {'T2 - T1','T3 - T4','Estimated offset'});
+xlabel('Four-timestamp term'); ylabel('Signed time term (ms)');
+title('Baseline view 2: symmetric path terms average to true offset');
+legend('Location','best');
+
+assert(isequal(offsetTermsMs,[11;3;7]) && ...
+    baseline.clientElapsedMs == 10 && baseline.serverResidenceMs == 2 && ...
+    baseline.estimatedNetworkRoundTripDelayMs == 8 && ...
+    baseline.estimatedSymmetricOneWayDelayMs == 4, ...
+    'Baseline offset or round-trip arithmetic changed.');
+assert(baseline.pathSymmetrySatisfiedInTruth && ...
+    baseline.clockOffsetUnbiasedInTruth && ...
+    baseline.processingCancellationResidualMs == 0, ...
+    'Baseline symmetry or processing-cancellation invariant changed.');
+
+%% Sweep 1 - change only true server-minus-client offset
+clockOffsetsMs = [-8 0 12];
+offsetSweepEstimatedMs = zeros(size(clockOffsetsMs));
+offsetSweepRoundTripMs = zeros(size(clockOffsetsMs));
+offsetSweepClientElapsedMs = zeros(size(clockOffsetsMs));
+for sweepIndex = 1:numel(clockOffsetsMs)
+    swept = model(100,clockOffsetsMs(sweepIndex),4,4,2);
+    offsetSweepEstimatedMs(sweepIndex) = swept.estimatedClockOffsetMs;
+    offsetSweepRoundTripMs(sweepIndex) = ...
+        swept.estimatedNetworkRoundTripDelayMs;
+    offsetSweepClientElapsedMs(sweepIndex) = swept.clientElapsedMs;
+end
+
+figure('Name','P06 clock-offset sweep estimate', ...
+    'Tag',experimentFigureTag);
+plot(clockOffsetsMs,offsetSweepEstimatedMs,'o-','LineWidth',1.4, ...
+    'DisplayName','Four-timestamp estimate'); hold on;
+plot(clockOffsetsMs,clockOffsetsMs,'k--','LineWidth',1.2, ...
+    'DisplayName','Simulated true offset');
+hold off; grid on;
+xlabel('True server-minus-client clock offset (ms)');
+ylabel('Estimated clock offset (ms)');
+title('Sweep 1: symmetric paths preserve offset translation');
+legend('Location','best');
+
+figure('Name','P06 clock-offset sweep invariant intervals', ...
+    'Tag',experimentFigureTag);
+plot(clockOffsetsMs,offsetSweepRoundTripMs,'o-','LineWidth',1.4, ...
+    'DisplayName','Estimated network round trip'); hold on;
+plot(clockOffsetsMs,offsetSweepClientElapsedMs,'s-','LineWidth',1.4, ...
+    'DisplayName','Client elapsed including residence');
+hold off; grid on;
+xlabel('True server-minus-client clock offset (ms)');
+ylabel('Elapsed interval (ms)');
+title('Sweep 1 changed view: same-clock intervals ignore offset');
+legend('Location','best');
+
+assert(isequal(offsetSweepEstimatedMs,clockOffsetsMs) && ...
+    isequal(offsetSweepRoundTripMs,[8 8 8]) && ...
+    isequal(offsetSweepClientElapsedMs,[10 10 10]), ...
+    'Clock-offset sweep estimates or invariant intervals changed.');
+disp(['Mechanism: offset translates both server timestamps equally. ' ...
+    'Differences taken within one clock and the symmetric estimate stay unchanged.']);
+
+%% Sweep 2 - reset offset and change only symmetric path delay
+symmetricOneWayDelaysMs = [1 4 10];
+delaySweepEstimatedOffsetMs = zeros(size(symmetricOneWayDelaysMs));
+delaySweepRoundTripMs = zeros(size(symmetricOneWayDelaysMs));
+delaySweepClientElapsedMs = zeros(size(symmetricOneWayDelaysMs));
+for sweepIndex = 1:numel(symmetricOneWayDelaysMs)
+    oneWayDelayMs = symmetricOneWayDelaysMs(sweepIndex);
+    swept = model(100,7,oneWayDelayMs,oneWayDelayMs,2);
+    delaySweepEstimatedOffsetMs(sweepIndex) = swept.estimatedClockOffsetMs;
+    delaySweepRoundTripMs(sweepIndex) = ...
+        swept.estimatedNetworkRoundTripDelayMs;
+    delaySweepClientElapsedMs(sweepIndex) = swept.clientElapsedMs;
+end
+
+figure('Name','P06 symmetric-delay sweep round trip', ...
+    'Tag',experimentFigureTag);
+plot(symmetricOneWayDelaysMs,delaySweepRoundTripMs,'o-', ...
+    'LineWidth',1.4,'DisplayName','Estimated network round trip'); hold on;
+plot(symmetricOneWayDelaysMs,delaySweepClientElapsedMs,'s-', ...
+    'LineWidth',1.4,'DisplayName','Client elapsed including 2 ms residence');
+hold off; grid on;
+xlabel('Symmetric one-way network delay (ms)');
+ylabel('Elapsed interval (ms)');
+title('Sweep 2: both path directions add to round trip');
+legend('Location','best');
+
+figure('Name','P06 symmetric-delay sweep offset invariance', ...
+    'Tag',experimentFigureTag);
+plot(symmetricOneWayDelaysMs,delaySweepEstimatedOffsetMs,'o-', ...
+    'LineWidth',1.4); grid on;
+xlabel('Symmetric one-way network delay (ms)');
+ylabel('Estimated clock offset (ms)');
+title('Sweep 2 changed view: equal path delay cancels from offset');
+
+assert(isequal(delaySweepEstimatedOffsetMs,[7 7 7]) && ...
+    isequal(delaySweepRoundTripMs,[2 8 20]) && ...
+    isequal(delaySweepClientElapsedMs,[4 10 22]), ...
+    'Symmetric-delay sweep offset or interval arithmetic changed.');
+disp(['Mechanism: equal forward and reverse delay enter the signed offset terms oppositely, ' ...
+    'but add in the network round trip.']);
+
+%% Deliberately broken case - path asymmetry aliases with offset
+broken = model(100,7,7,1,2);
+aliased = model(100,10,4,4,2);
+fprintf(['Broken symmetry: true offset %.0f ms is estimated as %.0f ms because path ' ...
+    'asymmetry %.0f ms contributes half its value.\n'],broken.clockOffsetMs, ...
+    broken.estimatedClockOffsetMs,broken.pathAsymmetryMs);
+
+figure('Name','P06 broken asymmetry timestamp alias', ...
+    'Tag',experimentFigureTag);
+plot(1:4,broken.timestampObservationMs,'o-','LineWidth',1.5, ...
+    'DisplayName','7 ms offset, 7/1 ms path'); hold on;
+plot(1:4,aliased.timestampObservationMs,'s--','LineWidth',1.3, ...
+    'DisplayName','10 ms offset, 4/4 ms path');
+hold off; grid on;
+set(gca,'XTick',1:4,'XTickLabel',{'T1','T2','T3','T4'});
+xlabel('Exchange event'); ylabel('Endpoint-local timestamp (ms)');
+title('Deliberately broken symmetry: distinct truths, identical observations');
+legend('Location','best');
+
+pathComparisonMs = [broken.forwardDelayMs broken.reverseDelayMs; ...
+    aliased.forwardDelayMs aliased.reverseDelayMs; ...
+    broken.estimatedSymmetricOneWayDelayMs ...
+    broken.estimatedSymmetricOneWayDelayMs];
+figure('Name','P06 broken asymmetry truth and inference', ...
+    'Tag',experimentFigureTag);
+bar(pathComparisonMs); grid on;
+set(gca,'XTick',1:3,'XTickLabel', ...
+    {'Broken truth','Alias truth','Inferred symmetry'});
+xlabel('Physical truth or endpoint inference');
+ylabel('Directional one-way delay (ms)');
+title('Broken-case symptom: half the directional difference becomes offset bias');
+legend({'Forward','Reverse'},'Location','best');
+
+assert(isequal(broken.timestampObservationMs,expectedTimestampMs + [0;3;3;0]) && ...
+    isequal(broken.timestampObservationMs,aliased.timestampObservationMs), ...
+    'The asymmetric case and symmetric offset alias must expose identical timestamps.');
+assert(broken.estimatedClockOffsetMs == 10 && ...
+    broken.clockOffsetErrorMs == 3 && ...
+    broken.estimatedNetworkRoundTripDelayMs == 8 && ...
+    broken.estimatedSymmetricOneWayDelayMs == 4, ...
+    'The broken asymmetry bias or round-trip estimate changed.');
+assert(~broken.pathSymmetrySatisfiedInTruth && ...
+    aliased.pathSymmetrySatisfiedInTruth && ...
+    broken.offsetIdentityResidualMs == 0 && ...
+    broken.roundTripIdentityResidualMs == 0, ...
+    'Zero identities must coexist with distinct truth-only symmetry states.');
+
+%% Read and explain the mechanism
+disp('Mechanism: theta_hat = theta + (forward delay - reverse delay)/2; delta_hat = forward + reverse delay.');
+disp('Four timestamps remove server residence, but cannot prove path symmetry or choose between the exact broken-case aliases.');
+disp('Teach back the two equations, the symmetry assumption, and the analytical evidence boundary.');

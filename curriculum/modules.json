@@ -109,12 +109,12 @@
       "phase_title": "Time and synchronization",
       "slug": "model-ntp-style-exchange",
       "folder": "modules/06-model-ntp-style-exchange",
-      "status": "scaffolded",
+      "status": "implemented",
       "implementation_batch": "P06",
       "prerequisites": [
         "P05"
       ],
-      "evidence_level": "none"
+      "evidence_level": "simulated"
     },
     {
       "number": 7,
