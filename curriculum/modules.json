@@ -141,12 +141,12 @@
       "phase_title": "Time and synchronization",
       "slug": "distribute-a-time-triggered-schedule",
       "folder": "modules/08-distribute-a-time-triggered-schedule",
-      "status": "scaffolded",
+      "status": "implemented",
       "implementation_batch": "P08",
       "prerequisites": [
         "P07"
       ],
-      "evidence_level": "none"
+      "evidence_level": "simulated"
     },
     {
       "number": 9,
