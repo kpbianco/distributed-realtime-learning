@@ -157,12 +157,12 @@
       "phase_title": "Coordination and flow",
       "slug": "replicate-shared-state",
       "folder": "modules/09-replicate-shared-state",
-      "status": "scaffolded",
+      "status": "implemented",
       "implementation_batch": "P09",
       "prerequisites": [
         "P08"
       ],
-      "evidence_level": "none"
+      "evidence_level": "simulated"
     },
     {
       "number": 10,
