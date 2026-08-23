@@ -189,12 +189,12 @@
       "phase_title": "Coordination and flow",
       "slug": "apply-backpressure",
       "folder": "modules/11-apply-backpressure",
-      "status": "scaffolded",
+      "status": "implemented",
       "implementation_batch": "P11",
       "prerequisites": [
         "P10"
       ],
-      "evidence_level": "none"
+      "evidence_level": "simulated"
     },
     {
       "number": 12,
