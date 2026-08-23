@@ -61,12 +61,12 @@
       "phase_title": "Network behavior",
       "slug": "compare-tcp-and-udp-behavior",
       "folder": "modules/03-compare-tcp-and-udp-behavior",
-      "status": "scaffolded",
+      "status": "implemented",
       "implementation_batch": "P03",
       "prerequisites": [
         "P02"
       ],
-      "evidence_level": "none"
+      "evidence_level": "simulated"
     },
     {
       "number": 4,
