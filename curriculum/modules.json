@@ -205,12 +205,12 @@
       "phase_title": "Coordination and flow",
       "slug": "build-consensus-intuition",
       "folder": "modules/12-build-consensus-intuition",
-      "status": "scaffolded",
+      "status": "implemented",
       "implementation_batch": "P12",
       "prerequisites": [
         "P11"
       ],
-      "evidence_level": "none"
+      "evidence_level": "simulated"
     },
     {
       "number": 13,
