@@ -173,12 +173,12 @@
       "phase_title": "Coordination and flow",
       "slug": "preserve-message-ordering",
       "folder": "modules/10-preserve-message-ordering",
-      "status": "scaffolded",
+      "status": "implemented",
       "implementation_batch": "P10",
       "prerequisites": [
         "P09"
       ],
-      "evidence_level": "none"
+      "evidence_level": "simulated"
     },
     {
       "number": 11,

@@ -28,6 +28,7 @@ From a shell:
 ./bin/learn start P07
 ./bin/learn start P08
 ./bin/learn start P09
+./bin/learn start P10
 ./bin/learn list
 ./bin/learn status
 ```
@@ -59,9 +60,11 @@ launch_lesson("P08")
 run_module_checks("P08")
 launch_lesson("P09")
 run_module_checks("P09")
+launch_lesson("P10")
+run_module_checks("P10")
 ```
 
-`P01` is the reference implementation; `P02` through `P09` are implemented learning slices. Run
+`P01` is the reference implementation; `P02` through `P10` are implemented learning slices. Run
 `./bin/learn status` or `./bin/learn list` for the current implementation frontier; later modules
 continue to advance through their own bounded, reviewable batches.
 
