@@ -77,12 +77,12 @@
       "phase_title": "Network behavior",
       "slug": "build-a-queue-and-watch-latency-grow",
       "folder": "modules/04-build-a-queue-and-watch-latency-grow",
-      "status": "scaffolded",
+      "status": "implemented",
       "implementation_batch": "P04",
       "prerequisites": [
         "P03"
       ],
-      "evidence_level": "none"
+      "evidence_level": "simulated"
     },
     {
       "number": 5,
