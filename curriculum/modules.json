@@ -221,12 +221,12 @@
       "phase_title": "Real-time networking",
       "slug": "budget-an-end-to-end-deadline",
       "folder": "modules/13-budget-an-end-to-end-deadline",
-      "status": "scaffolded",
+      "status": "implemented",
       "implementation_batch": "P13",
       "prerequisites": [
         "P12"
       ],
-      "evidence_level": "none"
+      "evidence_level": "simulated"
     },
     {
       "number": 14,

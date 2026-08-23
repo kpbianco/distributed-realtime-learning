@@ -1,34 +1,34 @@
 schema_version: 1
 batch:
-  id: P12
-  title: 'Implement P12: Build Consensus Intuition'
-  goal: Implement P12 as an interactive MATLAB lesson answering 'What inputs, observable effects, and
-    failure modes matter when you build Consensus Intuition?' through visible cause and effect.
+  id: P13
+  title: 'Implement P13: Budget an End-to-End Deadline'
+  goal: Implement P13 as an interactive MATLAB lesson answering 'What inputs, observable effects, and
+    failure modes matter when you budget an End-to-End Deadline?' through visible cause and effect.
 sources:
   product: products/distributed-realtime-learning/product.yaml
   requirements:
   - products/distributed-realtime-learning/PRD.md#cap-module-01--complete-learning-slice
   - products/distributed-realtime-learning/acceptance.yaml#CAP-MODULE-01
-  - modules/12-build-consensus-intuition/README.md
-  milestone: products/distributed-realtime-learning/milestones/DRL-M3.md
+  - modules/13-budget-an-end-to-end-deadline/README.md
+  milestone: products/distributed-realtime-learning/milestones/DRL-M4.md
   baseline_commit: 97f455503e6d2ae65a87b31968bae4c32d2f7bc3
   control_plane_repository: kpbianco/portfolio-control
-  control_plane_path: products/distributed-realtime-learning/batches/P12.yaml
+  control_plane_path: products/distributed-realtime-learning/batches/P13.yaml
   control_plane_revision: 4434b282cfb47997d791bd2933faf980453d199a  # pragma: allowlist secret
 dependencies:
-- P11
+- P12
 scope:
   allowed_paths:
-  - modules/12-build-consensus-intuition/**
+  - modules/13-budget-an-end-to-end-deadline/**
   - curriculum/modules.json
   - README.md
   - START_HERE.md
   - modules/README.md
   - bin/learn
   - bin/learn.py
-  - docs/plans/P12-*.md
-  - docs/evidence/P12-*.md
-  - tests/test_p12*.py
+  - docs/plans/P13-*.md
+  - docs/evidence/P13-*.md
+  - tests/test_p13*.py
   - tests/test_curriculum.py
   - tests/test_learn_cli.py
   forbidden_paths:
@@ -43,8 +43,8 @@ scope:
   - docs/TUTOR_PROTOCOL.md
   - Makefile
 acceptance:
-- 'Preserve the guiding question: What inputs, observable effects, and failure modes matter when you build
-  Consensus Intuition?'
+- 'Preserve the guiding question: What inputs, observable effects, and failure modes matter when you budget
+  an End-to-End Deadline?'
 - The learner flow visibly follows read, baseline, one lever, changed view, and mechanism-first explanation.
 - experiment.m has a deterministic baseline, labeled plots and metrics, two independent sweeps, and one
   deliberately broken case.
@@ -60,10 +60,10 @@ validation:
   - MATLAB_LEARNING_VERIFY_PROFILE=quick python3 -m unittest discover -s tests -v
   - MATLAB_LEARNING_VERIFY_PROFILE=full ./scripts/agent-verify.sh
   focused_tests_to_add:
-  - P12 artifact completeness and manifest identity
-  - P12 deterministic model and limiting-case checks
-  - P12 two-sweep and broken-case regression
-  - P12 placeholder and opaque-black-box regression
+  - P13 artifact completeness and manifest identity
+  - P13 deterministic model and limiting-case checks
+  - P13 two-sweep and broken-case regression
+  - P13 placeholder and opaque-black-box regression
   required_ci:
   - Portfolio Control validation
   - target Quality workflow
@@ -80,10 +80,10 @@ risk:
   - changes exceed allowed paths
   - expected result conflicts with the governing model
 rollback:
-  strategy: Revert P12 implementation changes and restore only its manifest status to scaffolded.
+  strategy: Revert P13 implementation changes and restore only its manifest status to scaffolded.
 evidence:
   output:
-  - docs/evidence/P12-<date>.md
+  - docs/evidence/P13-<date>.md
   - validation commands and exit results
   - figure, control, metric, and unit inventory
   - acceptance map, runtime inventory, and limitations
