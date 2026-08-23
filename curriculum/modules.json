@@ -125,12 +125,12 @@
       "phase_title": "Time and synchronization",
       "slug": "model-ptp-hardware-timestamping",
       "folder": "modules/07-model-ptp-hardware-timestamping",
-      "status": "scaffolded",
+      "status": "implemented",
       "implementation_batch": "P07",
       "prerequisites": [
         "P06"
       ],
-      "evidence_level": "none"
+      "evidence_level": "simulated"
     },
     {
       "number": 8,
